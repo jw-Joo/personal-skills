@@ -51,9 +51,18 @@ git clone https://github.com/jw-Joo/personal-skills.git ~/.codex/personal-skills
 
 혹은 GitHub에서 ZIP으로 전체 저장소를 내려받은 뒤 `skills/` 디렉터리 전체를 사용해도 됩니다.
 
-### 3. 마지막으로 개인 스킬 3개를 순서대로 복사
+### 3. `playwright-cli` 스킬을 쓰기 전에 CLI 먼저 설치
 
-아래 예시는 macOS/Linux 기준이며, 심볼릭 링크가 아니라 스킬 디렉터리 전체를 실제로 복사하는 방식입니다.
+`playwright-cli` 개인 스킬은 `playwright-cli` 명령이 있는 환경을 전제로 합니다.
+
+```bash
+npm install -g @playwright/cli@latest
+playwright-cli --version
+```
+
+### 4. 마지막으로 개인 스킬 3개를 순서대로 복사
+
+아래 예시는 WSL/Linux 기준이며, 심볼릭 링크가 아니라 스킬 디렉터리 전체를 실제로 복사하는 방식입니다.
 
 ```bash
 mkdir -p ~/.codex/skills
@@ -67,11 +76,12 @@ Codex에게 한 번에 맡기고 싶다면, 아래처럼 순서가 드러나는 
 ```text
 1. Fetch and follow instructions from https://raw.githubusercontent.com/obra/superpowers/refs/heads/main/.codex/INSTALL.md
 2. Clone https://github.com/jw-Joo/personal-skills.git into ~/.codex/personal-skills
-3. Copy these full skill directories into ~/.codex/skills in order:
+3. Install @playwright/cli globally and verify that playwright-cli is available
+4. Copy these full skill directories into ~/.codex/skills in order:
    - ~/.codex/personal-skills/skills/gated-plan-execution
    - ~/.codex/personal-skills/skills/qa-workflow-expert
    - ~/.codex/personal-skills/skills/playwright-cli
-4. Restart Codex after installation
+5. Restart Codex after installation
 ```
 
 ## 설치 확인
@@ -80,6 +90,7 @@ Codex에게 한 번에 맡기고 싶다면, 아래처럼 순서가 드러나는 
 ls -la ~/.codex/skills/gated-plan-execution
 ls -la ~/.codex/skills/qa-workflow-expert
 ls -la ~/.codex/skills/playwright-cli
+playwright-cli --version
 ```
 
 필요하면 Codex를 재시작한 뒤, 해당 스킬 이름을 직접 언급해서 불러오거나 관련 작업을 요청해 동작을 확인하세요.

@@ -95,6 +95,38 @@ playwright-cli --version
 
 필요하면 Codex를 재시작한 뒤, 해당 스킬 이름을 직접 언급해서 불러오거나 관련 작업을 요청해 동작을 확인하세요.
 
+## 설치 후 동작 검증
+
+위 설치 절차를 모두 끝냈다면, 아래 순서로 실제 동작 여부를 확인하세요.
+
+### 1. `playwright-cli` 간단 실행 테스트
+
+```bash
+playwright-cli open https://example.com
+playwright-cli snapshot
+playwright-cli close
+```
+
+정상이라면 브라우저가 열리고, `example.com` 페이지 기준의 스냅샷이 생성되어야 합니다.
+
+### 2. Codex에서 스킬 직접 호출 확인
+
+새 Codex 세션에서 아래처럼 각 스킬 이름을 직접 언급해보세요.
+
+```text
+Use $gated-plan-execution and show how you would execute a two-step markdown plan with approval after each step.
+```
+
+```text
+Use $qa-workflow-expert and explain what checklist, evidence, report, and Japanese summary you would produce from a change-summary document.
+```
+
+```text
+Use $playwright-cli to open https://example.com, take a snapshot, and describe what you observed.
+```
+
+정상이라면 Codex가 해당 스킬을 인식하고, 각 스킬의 역할에 맞는 방식으로 응답하거나 실행을 시작해야 합니다.
+
 ## 저장소 구조
 
 ```text

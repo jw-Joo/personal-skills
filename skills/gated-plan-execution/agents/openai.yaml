@@ -1,0 +1,4 @@
+interface:
+  display_name: "Gated Plan Execution"
+  short_description: "Approve each plan step before continuing"
+  default_prompt: "Use $gated-plan-execution to implement a markdown plan one approved step at a time."

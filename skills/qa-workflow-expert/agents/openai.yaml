@@ -1,0 +1,11 @@
+interface:
+  display_name: "QA Workflow Expert"
+  short_description: "Plan and run document-driven QA workflows"
+  default_prompt: "Use $qa-workflow-expert to turn this change summary into a checklist, evidence run, QA report, and Japanese verification summary."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "playwright"
+      description: "Playwright MCP for browser-driven QA execution"
+policy:
+  allow_implicit_invocation: true

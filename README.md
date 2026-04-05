@@ -1,8 +1,8 @@
 # personal-skills
 
-다른 PC에서도 바로 내려받아 쓸 수 있도록 개인용 Codex 스킬 원문을 보관하는 저장소입니다.
+다른 PC에서도 바로 내려받아 쓸 수 있도록 개인용 Codex 스킬 전체 디렉터리를 보관하는 저장소입니다.
 
-현재 이 저장소에는 내가 전역에서 사용 중인 아래 3개 스킬의 원문이 그대로 들어 있습니다.
+현재 이 저장소에는 내가 전역에서 사용 중인 아래 3개 스킬이 보조 파일까지 포함된 형태로 그대로 들어 있습니다.
 
 ## 포함된 스킬
 
@@ -13,7 +13,17 @@
 ## 이 저장소의 목적
 
 * 다른 PC에서 이 저장소만 clone 해도 개인 스킬 3개의 원문을 바로 확보할 수 있게 하기
-* `obra/superpowers`를 먼저 설치한 뒤, 필요한 개인 스킬을 추가로 복사해서 쓸 수 있게 하기
+* `obra/superpowers`를 먼저 설치한 뒤, 필요한 개인 스킬 디렉터리를 추가로 복사해서 쓸 수 있게 하기
+
+## 중요한 점
+
+일부 스킬은 `SKILL.md`만으로 끝나지 않습니다.
+
+* `gated-plan-execution`은 `agents/openai.yaml`을 포함합니다.
+* `qa-workflow-expert`는 `agents/openai.yaml`과 `references/output-patterns.md`를 포함합니다.
+* `playwright-cli`는 `references/*.md`를 포함합니다.
+
+따라서 `SKILL.md` 파일만 따로 복사하면 불완전할 수 있습니다. 가능하면 항상 스킬 디렉터리 전체를 clone 또는 복사하세요.
 
 ## 권장 사용 순서
 
@@ -39,16 +49,11 @@ Fetch and follow instructions from https://raw.githubusercontent.com/obra/superp
 git clone https://github.com/jw-Joo/personal-skills.git ~/.codex/personal-skills
 ```
 
-혹은 GitHub에서 필요한 `SKILL.md` 파일만 직접 내려받아도 됩니다.
-
-Raw URLs:
-* `gated-plan-execution`: `https://raw.githubusercontent.com/jw-Joo/personal-skills/main/skills/gated-plan-execution/SKILL.md`
-* `qa-workflow-expert`: `https://raw.githubusercontent.com/jw-Joo/personal-skills/main/skills/qa-workflow-expert/SKILL.md`
-* `playwright-cli`: `https://raw.githubusercontent.com/jw-Joo/personal-skills/main/skills/playwright-cli/SKILL.md`
+혹은 GitHub에서 ZIP으로 전체 저장소를 내려받은 뒤 `skills/` 디렉터리 전체를 사용해도 됩니다.
 
 ### 3. 마지막으로 개인 스킬 3개를 순서대로 복사
 
-아래 예시는 macOS/Linux 기준이며, 심볼릭 링크가 아니라 실제 파일 복사 방식입니다.
+아래 예시는 macOS/Linux 기준이며, 심볼릭 링크가 아니라 스킬 디렉터리 전체를 실제로 복사하는 방식입니다.
 
 ```bash
 mkdir -p ~/.codex/skills
@@ -62,7 +67,7 @@ Codex에게 한 번에 맡기고 싶다면, 아래처럼 순서가 드러나는 
 ```text
 1. Fetch and follow instructions from https://raw.githubusercontent.com/obra/superpowers/refs/heads/main/.codex/INSTALL.md
 2. Clone https://github.com/jw-Joo/personal-skills.git into ~/.codex/personal-skills
-3. Copy these folders into ~/.codex/skills in order:
+3. Copy these full skill directories into ~/.codex/skills in order:
    - ~/.codex/personal-skills/skills/gated-plan-execution
    - ~/.codex/personal-skills/skills/qa-workflow-expert
    - ~/.codex/personal-skills/skills/playwright-cli
@@ -85,10 +90,18 @@ ls -la ~/.codex/skills/playwright-cli
 skills/
   gated-plan-execution/
     SKILL.md
+    agents/
+      openai.yaml
   qa-workflow-expert/
     SKILL.md
+    agents/
+      openai.yaml
+    references/
+      output-patterns.md
   playwright-cli/
     SKILL.md
+    references/
+      *.md
 ```
 
 ## 참고

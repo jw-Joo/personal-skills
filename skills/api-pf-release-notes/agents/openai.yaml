@@ -1,0 +1,4 @@
+interface:
+  display_name: "API-PF Release Notes"
+  short_description: "Create API-PF release note packages from input folders."
+  default_prompt: "Use this skill to build an API-PF release note from a user-provided directory that contains title, commit, validation, and image files."

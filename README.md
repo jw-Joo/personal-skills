@@ -2,17 +2,18 @@
 
 다른 PC에서도 바로 내려받아 쓸 수 있도록 개인용 Codex 스킬 전체 디렉터리를 보관하는 저장소입니다.
 
-현재 이 저장소에는 내가 전역에서 사용 중인 아래 3개 스킬이 보조 파일까지 포함된 형태로 그대로 들어 있습니다.
+현재 이 저장소에는 내가 전역에서 사용 중인 아래 4개 스킬이 보조 파일까지 포함된 형태로 그대로 들어 있습니다.
 
 ## 포함된 스킬
 
 * `gated-plan-execution`
 * `qa-workflow-expert`
 * `playwright-cli`
+* `api-pf-release-notes`
 
 ## 이 저장소의 목적
 
-* 다른 PC에서 이 저장소만 clone 해도 개인 스킬 3개의 원문을 바로 확보할 수 있게 하기
+* 다른 PC에서 이 저장소만 clone 해도 개인 스킬 4개의 원문을 바로 확보할 수 있게 하기
 * `obra/superpowers`를 먼저 설치한 뒤, 필요한 개인 스킬 디렉터리를 추가로 복사해서 쓸 수 있게 하기
 
 ## 중요한 점
@@ -22,6 +23,7 @@
 * `gated-plan-execution`은 `agents/openai.yaml`을 포함합니다.
 * `qa-workflow-expert`는 `agents/openai.yaml`과 `references/output-patterns.md`를 포함합니다.
 * `playwright-cli`는 `references/*.md`를 포함합니다.
+* `api-pf-release-notes`는 `agents/openai.yaml`, `assets/output_template.md`, `references/*.md`, `scripts/*.py`를 포함합니다.
 
 따라서 `SKILL.md` 파일만 따로 복사하면 불완전할 수 있습니다. 가능하면 항상 스킬 디렉터리 전체를 clone 또는 복사하세요.
 
@@ -60,7 +62,7 @@ npm install -g @playwright/cli@latest
 playwright-cli --version
 ```
 
-### 4. 마지막으로 개인 스킬 3개를 순서대로 복사
+### 4. 마지막으로 개인 스킬 4개를 순서대로 복사
 
 아래 예시는 WSL/Linux 기준이며, 심볼릭 링크가 아니라 스킬 디렉터리 전체를 실제로 복사하는 방식입니다.
 
@@ -69,6 +71,7 @@ mkdir -p ~/.codex/skills
 cp -R ~/.codex/personal-skills/skills/gated-plan-execution ~/.codex/skills/
 cp -R ~/.codex/personal-skills/skills/qa-workflow-expert ~/.codex/skills/
 cp -R ~/.codex/personal-skills/skills/playwright-cli ~/.codex/skills/
+cp -R ~/.codex/personal-skills/skills/api-pf-release-notes ~/.codex/skills/
 ```
 
 Codex에게 한 번에 맡기고 싶다면, 아래처럼 순서가 드러나는 요청문으로 안내하면 됩니다.
@@ -81,6 +84,7 @@ Codex에게 한 번에 맡기고 싶다면, 아래처럼 순서가 드러나는 
    - ~/.codex/personal-skills/skills/gated-plan-execution
    - ~/.codex/personal-skills/skills/qa-workflow-expert
    - ~/.codex/personal-skills/skills/playwright-cli
+   - ~/.codex/personal-skills/skills/api-pf-release-notes
 5. Restart Codex after installation
 ```
 
@@ -90,6 +94,7 @@ Codex에게 한 번에 맡기고 싶다면, 아래처럼 순서가 드러나는 
 ls -la ~/.codex/skills/gated-plan-execution
 ls -la ~/.codex/skills/qa-workflow-expert
 ls -la ~/.codex/skills/playwright-cli
+ls -la ~/.codex/skills/api-pf-release-notes
 playwright-cli --version
 ```
 
@@ -125,6 +130,10 @@ Use $qa-workflow-expert and explain what checklist, evidence, report, and Japane
 Use $playwright-cli to open https://example.com, take a snapshot, and describe what you observed.
 ```
 
+```text
+Use $api-pf-release-notes to explain how you would discover inputs, inspect commit history, and build a Japanese release note package from a provided directory.
+```
+
 정상이라면 Codex가 해당 스킬을 인식하고, 각 스킬의 역할에 맞는 방식으로 응답하거나 실행을 시작해야 합니다.
 
 ## 저장소 구조
@@ -145,6 +154,16 @@ skills/
     SKILL.md
     references/
       *.md
+  api-pf-release-notes/
+    SKILL.md
+    agents/
+      openai.yaml
+    assets/
+      output_template.md
+    references/
+      *.md
+    scripts/
+      *.py
 ```
 
 ## 참고

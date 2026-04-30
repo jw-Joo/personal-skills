@@ -1,0 +1,4 @@
+interface:
+  display_name: "TDD Implementation"
+  short_description: "Implement code with a practical test-first workflow."
+  default_prompt: "Use TDD for this code change: classify the change risk, write or update a failing test first when appropriate, implement the smallest fix, rerun tests, and report the red/green results."

@@ -1,6 +1,6 @@
 # README Post-Install Verification Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
+> **For Codex:** Use `gated-plan-execution` to implement this plan task-by-task when explicit approval between steps is needed.
 
 **Goal:** README에 설치 완료 후 `playwright-cli` 실행 확인과 스킬 호출 확인 절차를 추가한다.
 

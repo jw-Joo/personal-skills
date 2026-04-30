@@ -14,7 +14,7 @@
 ## 이 저장소의 목적
 
 * 다른 PC에서 이 저장소만 clone 해도 개인 스킬 4개의 원문을 바로 확보할 수 있게 하기
-* `obra/superpowers`를 먼저 설치한 뒤, 필요한 개인 스킬 디렉터리를 추가로 복사해서 쓸 수 있게 하기
+* 필요한 개인 스킬 디렉터리를 선택해서 `~/.codex/skills`에 복사해 쓸 수 있게 하기
 
 ## 중요한 점
 
@@ -29,23 +29,7 @@
 
 ## 권장 사용 순서
 
-### 1. 먼저 `obra/superpowers` 설치
-
-`obra/superpowers` 저장소 README는 Codex 설치 방법으로 아래 지시를 먼저 실행하라고 안내합니다.
-
-Source:
-* https://github.com/obra/superpowers
-* https://raw.githubusercontent.com/obra/superpowers/refs/heads/main/.codex/INSTALL.md
-
-Codex에게 먼저 이렇게 요청하세요.
-
-```text
-Fetch and follow instructions from https://raw.githubusercontent.com/obra/superpowers/refs/heads/main/.codex/INSTALL.md
-```
-
-이 단계는 개인 스킬보다 먼저 끝내는 것을 권장합니다.
-
-### 2. 그 다음 이 저장소 클론
+### 1. 이 저장소 클론
 
 ```bash
 git clone https://github.com/jw-Joo/personal-skills.git ~/.codex/personal-skills
@@ -53,7 +37,7 @@ git clone https://github.com/jw-Joo/personal-skills.git ~/.codex/personal-skills
 
 혹은 GitHub에서 ZIP으로 전체 저장소를 내려받은 뒤 `skills/` 디렉터리 전체를 사용해도 됩니다.
 
-### 3. `playwright-cli` 스킬을 쓰기 전에 CLI 먼저 설치
+### 2. `playwright-cli` 스킬을 쓰기 전에 CLI 먼저 설치
 
 `playwright-cli` 개인 스킬은 `playwright-cli` 명령이 있는 환경을 전제로 합니다.
 
@@ -62,7 +46,7 @@ npm install -g @playwright/cli@latest
 playwright-cli --version
 ```
 
-### 4. 마지막으로 개인 스킬 4개를 순서대로 복사
+### 3. 개인 스킬 4개를 순서대로 복사
 
 아래 예시는 WSL/Linux 기준이며, 심볼릭 링크가 아니라 스킬 디렉터리 전체를 실제로 복사하는 방식입니다.
 
@@ -77,15 +61,14 @@ cp -R ~/.codex/personal-skills/skills/api-pf-release-notes ~/.codex/skills/
 Codex에게 한 번에 맡기고 싶다면, 아래처럼 순서가 드러나는 요청문으로 안내하면 됩니다.
 
 ```text
-1. Fetch and follow instructions from https://raw.githubusercontent.com/obra/superpowers/refs/heads/main/.codex/INSTALL.md
-2. Clone https://github.com/jw-Joo/personal-skills.git into ~/.codex/personal-skills
-3. Install @playwright/cli globally and verify that playwright-cli is available
-4. Copy these full skill directories into ~/.codex/skills in order:
+1. Clone https://github.com/jw-Joo/personal-skills.git into ~/.codex/personal-skills
+2. Install @playwright/cli globally and verify that playwright-cli is available
+3. Copy these full skill directories into ~/.codex/skills in order:
    - ~/.codex/personal-skills/skills/gated-plan-execution
    - ~/.codex/personal-skills/skills/qa-workflow-expert
    - ~/.codex/personal-skills/skills/playwright-cli
    - ~/.codex/personal-skills/skills/api-pf-release-notes
-5. Restart Codex after installation
+4. Restart Codex after installation
 ```
 
 ## 설치 확인

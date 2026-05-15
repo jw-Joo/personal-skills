@@ -1,10 +1,10 @@
 # README Post-Install Verification Implementation Plan
 
-> **For Codex:** Use `gated-plan-execution` to implement this plan task-by-task when explicit approval between steps is needed.
+> **For Codex:** If explicit approval between steps is needed, use the planning workflow from the Matt Pocock skills installation instead of a vendored local `gated-plan-execution` skill.
 
-**Goal:** README에 설치 완료 후 `playwright-cli` 실행 확인과 스킬 호출 확인 절차를 추가한다.
+**Goal:** README에 설치 완료 후 `playwright-cli` 실행 확인, 로컬 스킬 호출 확인, Matt Pocock skills 설정 확인 절차를 추가한다.
 
-**Architecture:** 기존 설치 순서는 유지하고, 설치 확인 이후에 별도 검증 섹션을 추가한다. 검증은 `playwright-cli` 명령 실행과 Codex 프롬프트 예시 두 축으로 구성한다.
+**Architecture:** 기존 설치 순서는 유지하되, `gated-plan-execution` 로컬 스킬 대신 Matt Pocock skills 설치 지침을 추가한다. 검증은 `playwright-cli` 명령 실행, 로컬 Codex 스킬 프롬프트 예시, Matt Pocock skills 설정 확인으로 구성한다.
 
 **Tech Stack:** Markdown, Codex skills, playwright-cli
 
@@ -19,6 +19,6 @@
 
 - [ ] Step 1: Add a post-install verification section after the install check block
 - [ ] Step 2: Include a minimal `playwright-cli` smoke test using `open`, `goto`, `snapshot`, and `close`
-- [ ] Step 3: Add example Codex prompts that explicitly invoke `$gated-plan-execution`, `$qa-workflow-expert`, and `$playwright-cli`
+- [ ] Step 3: Add example Codex prompts that explicitly invoke `$qa-workflow-expert`, `$playwright-cli`, `$api-pf-release-notes`, and `$tdd-implementation`
 - [ ] Step 4: Review the README for ordering and clarity
 - [ ] Step 5: Commit and push the updated documentation

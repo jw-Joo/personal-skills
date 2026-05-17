@@ -1,0 +1,4 @@
+interface:
+  display_name: "Readable HTML Docs"
+  short_description: "Turn dense docs into review-friendly HTML"
+  default_prompt: "Use $write-readable-html-docs to turn this Markdown design document into a review-friendly standalone HTML file."

@@ -2,7 +2,7 @@
 
 다른 PC에서도 바로 내려받아 쓸 수 있도록 개인용 Codex 스킬 디렉터리와 설치 지침을 보관하는 저장소입니다.
 
-현재 이 저장소에는 내가 전역에서 사용 중인 아래 4개 로컬 스킬이 보조 파일까지 포함된 형태로 들어 있습니다.
+현재 이 저장소에는 내가 전역에서 사용 중인 아래 5개 로컬 스킬이 보조 파일까지 포함된 형태로 들어 있습니다.
 
 ## 포함된 로컬 스킬
 
@@ -10,6 +10,7 @@
 * `playwright-cli`
 * `api-pf-release-notes`
 * `tdd-implementation`
+* `write-readable-html-docs`
 
 ## 외부에서 적용할 스킬
 
@@ -28,7 +29,7 @@ npx skills@latest add mattpocock/skills
 
 ## 이 저장소의 목적
 
-* 다른 PC에서 이 저장소만 clone 해도 개인 로컬 스킬 4개의 원문을 바로 확보할 수 있게 하기
+* 다른 PC에서 이 저장소만 clone 해도 개인 로컬 스킬 5개의 원문을 바로 확보할 수 있게 하기
 * 필요한 개인 스킬 디렉터리를 선택해서 `~/.codex/skills`에 복사해 쓸 수 있게 하기
 * 이 저장소에 vendoring하지 않는 Matt Pocock skills는 upstream 설치 절차로 적용하게 안내하기
 
@@ -40,6 +41,7 @@ npx skills@latest add mattpocock/skills
 * `playwright-cli`는 `references/*.md`를 포함합니다.
 * `api-pf-release-notes`는 `agents/openai.yaml`, `assets/output_template.md`, `references/*.md`, `scripts/*.py`를 포함합니다.
 * `tdd-implementation`은 `agents/openai.yaml`을 포함합니다.
+* `write-readable-html-docs`는 `agents/openai.yaml`, `references/html-patterns.md`, `scripts/validate_html_doc.py`를 포함합니다.
 
 따라서 `SKILL.md` 파일만 따로 복사하면 불완전할 수 있습니다. 가능하면 항상 스킬 디렉터리 전체를 clone 또는 복사하세요.
 
@@ -78,7 +80,7 @@ npm install -g @playwright/cli@latest
 playwright-cli --version
 ```
 
-### 4. 개인 로컬 스킬 4개를 복사
+### 4. 개인 로컬 스킬 5개를 복사
 
 아래 예시는 WSL/Linux 기준이며, 심볼릭 링크가 아니라 스킬 디렉터리 전체를 실제로 복사하는 방식입니다.
 
@@ -88,6 +90,7 @@ cp -R ~/.codex/personal-skills/skills/qa-workflow-expert ~/.codex/skills/
 cp -R ~/.codex/personal-skills/skills/playwright-cli ~/.codex/skills/
 cp -R ~/.codex/personal-skills/skills/api-pf-release-notes ~/.codex/skills/
 cp -R ~/.codex/personal-skills/skills/tdd-implementation ~/.codex/skills/
+cp -R ~/.codex/personal-skills/skills/write-readable-html-docs ~/.codex/skills/
 ```
 
 Codex에게 한 번에 맡기고 싶다면, 아래처럼 순서가 드러나는 요청문으로 안내하면 됩니다.
@@ -102,6 +105,7 @@ Codex에게 한 번에 맡기고 싶다면, 아래처럼 순서가 드러나는 
    - ~/.codex/personal-skills/skills/playwright-cli
    - ~/.codex/personal-skills/skills/api-pf-release-notes
    - ~/.codex/personal-skills/skills/tdd-implementation
+   - ~/.codex/personal-skills/skills/write-readable-html-docs
 6. Restart Codex after installation
 ```
 
@@ -112,6 +116,7 @@ ls -la ~/.codex/skills/qa-workflow-expert
 ls -la ~/.codex/skills/playwright-cli
 ls -la ~/.codex/skills/api-pf-release-notes
 ls -la ~/.codex/skills/tdd-implementation
+ls -la ~/.codex/skills/write-readable-html-docs
 playwright-cli --version
 ```
 
@@ -153,6 +158,10 @@ Use $api-pf-release-notes to explain how you would discover inputs, inspect comm
 Use $tdd-implementation and explain how you would classify a code change, add a failing test first when appropriate, implement the smallest fix, and report the red/green results.
 ```
 
+```text
+Use $write-readable-html-docs and explain how you would turn a Markdown design document into a standalone review-friendly HTML file, including source-sync validation.
+```
+
 ### 3. Matt Pocock skills 설정 확인
 
 Matt Pocock skills를 설치한 뒤 새 에이전트 세션에서 아래 명령을 실행해 프로젝트별 설정을 확인합니다.
@@ -191,6 +200,14 @@ skills/
     SKILL.md
     agents/
       openai.yaml
+  write-readable-html-docs/
+    SKILL.md
+    agents/
+      openai.yaml
+    references/
+      html-patterns.md
+    scripts/
+      validate_html_doc.py
 ```
 
 ## 참고

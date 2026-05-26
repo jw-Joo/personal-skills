@@ -84,6 +84,33 @@ Use instead of Mermaid when producing standalone HTML without external scripts.
 </div>
 ```
 
+## Final Flow Summary Graphic
+
+Add a bottom-of-document graphic when the document describes a workflow, lifecycle, architecture path, or implementation sequence. Place it after the appendix or just before the footer so readers finish with a compact mental model.
+
+Use inline SVG or CSS/HTML blocks, not Mermaid runtime, so the document stays standalone. The graphic should show:
+
+- the trigger or input
+- the major modules or boundaries
+- storage or no-storage policy
+- delivery or output
+- loss, retry, security, or rollback policy when those decisions matter
+
+```html
+<section id="final-flow" class="section">
+  <h2>Flow At A Glance</h2>
+  <div class="diagram-shell" role="figure" aria-label="End-to-end flow graphic">
+    <svg class="flow-graphic" viewBox="0 0 960 360" role="img" aria-labelledby="flow-title flow-desc">
+      <title id="flow-title">End-to-end flow</title>
+      <desc id="flow-desc">Compact final summary of the processing flow.</desc>
+      <!-- Draw module boxes, arrows, and policy callouts here. -->
+    </svg>
+  </div>
+</section>
+```
+
+Keep labels short and domain-specific. Do not use the graphic to introduce new decisions that are absent from the source document.
+
 ## Details Appendix
 
 Use for long tables, raw mappings, schemas, examples, and edge cases.

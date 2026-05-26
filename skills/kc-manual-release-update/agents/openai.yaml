@@ -1,0 +1,4 @@
+interface:
+  display_name: "KC Manual Release Update"
+  short_description: "Update KC manuals and report changes"
+  default_prompt: "Use $kc-manual-release-update to update the kc-manual documentation from this full release note and create the before/after HTML report."

@@ -2,13 +2,15 @@
 
 다른 PC에서도 바로 내려받아 쓸 수 있도록 개인용 Codex 스킬 디렉터리와 설치 지침을 보관하는 저장소입니다.
 
-현재 이 저장소에는 내가 전역에서 사용 중인 아래 5개 로컬 스킬이 보조 파일까지 포함된 형태로 들어 있습니다.
+현재 이 저장소에는 내가 전역에서 사용 중인 아래 7개 로컬 스킬이 보조 파일까지 포함된 형태로 들어 있습니다.
 
 ## 포함된 로컬 스킬
 
 * `qa-workflow-expert`
 * `playwright-cli`
 * `api-pf-release-notes`
+* `kc-manual-release-update`
+* `kc-manual-change-summary`
 * `tdd-implementation`
 * `write-readable-html-docs`
 
@@ -29,7 +31,7 @@ npx skills@latest add mattpocock/skills
 
 ## 이 저장소의 목적
 
-* 다른 PC에서 이 저장소만 clone 해도 개인 로컬 스킬 5개의 원문을 바로 확보할 수 있게 하기
+* 다른 PC에서 이 저장소만 clone 해도 개인 로컬 스킬 7개의 원문을 바로 확보할 수 있게 하기
 * 필요한 개인 스킬 디렉터리를 선택해서 `~/.codex/skills`에 복사해 쓸 수 있게 하기
 * 이 저장소에 vendoring하지 않는 Matt Pocock skills는 upstream 설치 절차로 적용하게 안내하기
 
@@ -40,6 +42,8 @@ npx skills@latest add mattpocock/skills
 * `qa-workflow-expert`는 `agents/openai.yaml`과 `references/output-patterns.md`를 포함합니다.
 * `playwright-cli`는 `references/*.md`를 포함합니다.
 * `api-pf-release-notes`는 `agents/openai.yaml`, `assets/output_template.md`, `references/*.md`, `scripts/*.py`를 포함합니다.
+* `kc-manual-release-update`는 `agents/openai.yaml`, `references/*.md`, `scripts/*.py`를 포함합니다.
+* `kc-manual-change-summary`는 `agents/openai.yaml`을 포함합니다.
 * `tdd-implementation`은 `agents/openai.yaml`을 포함합니다.
 * `write-readable-html-docs`는 `agents/openai.yaml`, `references/html-patterns.md`, `scripts/validate_html_doc.py`를 포함합니다.
 
@@ -80,7 +84,7 @@ npm install -g @playwright/cli@latest
 playwright-cli --version
 ```
 
-### 4. 개인 로컬 스킬 5개를 복사
+### 4. 개인 로컬 스킬 7개를 복사
 
 아래 예시는 WSL/Linux 기준이며, 심볼릭 링크가 아니라 스킬 디렉터리 전체를 실제로 복사하는 방식입니다.
 
@@ -89,6 +93,8 @@ mkdir -p ~/.codex/skills
 cp -R ~/.codex/personal-skills/skills/qa-workflow-expert ~/.codex/skills/
 cp -R ~/.codex/personal-skills/skills/playwright-cli ~/.codex/skills/
 cp -R ~/.codex/personal-skills/skills/api-pf-release-notes ~/.codex/skills/
+cp -R ~/.codex/personal-skills/skills/kc-manual-release-update ~/.codex/skills/
+cp -R ~/.codex/personal-skills/skills/kc-manual-change-summary ~/.codex/skills/
 cp -R ~/.codex/personal-skills/skills/tdd-implementation ~/.codex/skills/
 cp -R ~/.codex/personal-skills/skills/write-readable-html-docs ~/.codex/skills/
 ```
@@ -104,6 +110,8 @@ Codex에게 한 번에 맡기고 싶다면, 아래처럼 순서가 드러나는 
    - ~/.codex/personal-skills/skills/qa-workflow-expert
    - ~/.codex/personal-skills/skills/playwright-cli
    - ~/.codex/personal-skills/skills/api-pf-release-notes
+   - ~/.codex/personal-skills/skills/kc-manual-release-update
+   - ~/.codex/personal-skills/skills/kc-manual-change-summary
    - ~/.codex/personal-skills/skills/tdd-implementation
    - ~/.codex/personal-skills/skills/write-readable-html-docs
 6. Restart Codex after installation
@@ -115,6 +123,8 @@ Codex에게 한 번에 맡기고 싶다면, 아래처럼 순서가 드러나는 
 ls -la ~/.codex/skills/qa-workflow-expert
 ls -la ~/.codex/skills/playwright-cli
 ls -la ~/.codex/skills/api-pf-release-notes
+ls -la ~/.codex/skills/kc-manual-release-update
+ls -la ~/.codex/skills/kc-manual-change-summary
 ls -la ~/.codex/skills/tdd-implementation
 ls -la ~/.codex/skills/write-readable-html-docs
 playwright-cli --version
@@ -152,6 +162,14 @@ Use $playwright-cli to open https://example.com, take a snapshot, and describe w
 
 ```text
 Use $api-pf-release-notes to explain how you would discover inputs, inspect commit history, and build a Japanese release note package from a provided directory.
+```
+
+```text
+Use $kc-manual-release-update to explain how you would update kc-manual RST documentation from a full release-note package and create a before/after HTML report.
+```
+
+```text
+Use $kc-manual-change-summary to explain how you would create a concise Japanese マニュアル変更箇所 Markdown file from a manual_update_report.
 ```
 
 ```text
@@ -196,6 +214,18 @@ skills/
       *.md
     scripts/
       *.py
+  kc-manual-release-update/
+    SKILL.md
+    agents/
+      openai.yaml
+    references/
+      *.md
+    scripts/
+      *.py
+  kc-manual-change-summary/
+    SKILL.md
+    agents/
+      openai.yaml
   tdd-implementation/
     SKILL.md
     agents/

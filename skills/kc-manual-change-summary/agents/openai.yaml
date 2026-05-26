@@ -1,0 +1,7 @@
+interface:
+  display_name: "KC Manual Change Summary"
+  short_description: "Summarize kc-manual reports in Japanese."
+  default_prompt: "Use $kc-manual-change-summary to create a concise Japanese マニュアル変更箇所 Markdown file from this kc-manual manual_update_report HTML or Markdown."
+
+policy:
+  allow_implicit_invocation: true

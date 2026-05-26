@@ -58,11 +58,13 @@ Use wording like:
    - Sticky/early navigation: short section labels.
    - Main sections: overview, flow, responsibility, contract/API, storage/config, implementation, validation, decisions.
    - Appendix: long mappings, schemas, raw examples, edge cases, detailed TODOs.
+   - Final flow summary: add a bottom-of-document graphic that lets readers understand the end-to-end processing flow at a glance.
 
 4. Write standalone HTML.
    - Embed CSS in the file unless the user asks for shared assets.
    - Use semantic elements: `header`, `nav`, `main`, `section`, `article`, `details`, `summary`, `table`.
    - Prefer CSS grids, flow cards, callouts, chips, timelines, and checklists over long paragraphs.
+   - Add the final flow summary near the bottom, before the footer or after the appendix. Use inline SVG or CSS/HTML blocks so it works without external runtimes.
    - Keep colors restrained and not one-note. Use neutral base with a few semantic accents.
    - Preserve code blocks and exact identifiers with `code`/`pre`.
 
@@ -78,6 +80,7 @@ Read `references/html-patterns.md` when building or revising a document. It cont
 
 - hero + metadata strip
 - flow diagrams
+- final flow summary graphic
 - responsibility matrix
 - source synchronization note
 - collapsible appendix
@@ -91,6 +94,7 @@ Read `references/html-patterns.md` when building or revising a document. It cont
 - Preserve the source language. For Korean docs, write Korean UI labels and notes.
 - Do not expose private secrets, full tokens, private keys, or sensitive raw payloads.
 - If the source has Mermaid, do not rely on Mermaid runtime unless the user wants external scripts. Recreate the meaning with HTML/CSS flow blocks.
+- When the source document exists and the final flow summary changes document content, update the source with an equivalent text, Mermaid, or diagram description.
 - Avoid turning every original heading into a top-level HTML section. Reorganize by reader usefulness.
 - Put long raw mappings, SQL, OpenAPI snippets, and exhaustive tables behind `details` unless they are central to first-pass understanding.
 - Mention in the final response where the file was created and what validation was run.

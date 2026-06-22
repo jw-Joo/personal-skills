@@ -13,6 +13,8 @@ Use these patterns to make dense design docs readable in a browser. Adapt labels
 7. Implementation timeline
 8. Review checklist
 9. Collapsible appendix for exhaustive details
+10. Actual request/processing flow near the bottom
+11. Final flow summary graphic
 
 ## Hero + Metrics
 
@@ -84,9 +86,90 @@ Use instead of Mermaid when producing standalone HTML without external scripts.
 </div>
 ```
 
+## Actual Request / Processing Flow
+
+Use near the bottom of API, QA, deployment, workflow, lifecycle, or architecture documents to show what actually happens for one representative run. Place it after detailed evidence/appendix and before the final flow summary graphic.
+
+The section should answer these questions at a glance:
+
+- What request, event, command, or trigger starts the flow?
+- What payload/body/config is sent, and in what shape?
+- Which public boundary receives it?
+- Which internal modules, adapters, stores, queues, or external systems handle it?
+- What logs, audit entries, status changes, or side effects prove it happened?
+- What response, artifact, or final state is returned?
+
+Use concrete values from the source when available, but redact sensitive values. Put long raw payloads, tokens, SQL, certificates, private keys, or very large JSON/hex behind `details`, or summarize them when they are not safe to expose.
+
+```html
+<section id="actual-processing" class="section">
+  <h2>실제 요청 처리 흐름</h2>
+  <p class="section-intro">대표 요청이 어디서 시작해 어떤 내부 처리를 거쳐 어떤 응답으로 돌아오는지 보여줍니다.</p>
+
+  <div class="wire-visual">
+    <div class="wire-row">
+      <article class="http-card">
+        <h3>1. 들어온 요청</h3>
+        <div class="kv">
+          <b>Method</b><span><code>POST</code></span>
+          <b>Path</b><span><code>/example</code></span>
+          <b>Header</b><span><code>X-Request-Id: qa-example</code></span>
+        </div>
+        <div class="payload-box">
+          <p>Payload shape. Keep secrets redacted.</p>
+          <code class="hex">{"example":"shape-only"}</code>
+        </div>
+      </article>
+
+      <div class="wire-arrow" aria-hidden="true">→</div>
+
+      <article class="http-card">
+        <h3>최종 응답</h3>
+        <div class="kv">
+          <b>Status</b><span><code>200 OK</code></span>
+          <b>Body</b><span><code>{"ok":true}</code></span>
+        </div>
+      </article>
+    </div>
+
+    <div class="process-lane">
+      <article class="process-step">
+        <span class="chip blue">Boundary</span>
+        <strong>Public entry</strong>
+        <p>How the request enters the system.</p>
+      </article>
+      <article class="process-step">
+        <span class="chip good">Module</span>
+        <strong>Internal processing</strong>
+        <p>How the core module validates, translates, or persists it.</p>
+      </article>
+      <article class="process-step">
+        <span class="chip warn">External call</span>
+        <strong>Adapter / store</strong>
+        <p>Which adapter, database, queue, or service is called.</p>
+      </article>
+      <article class="process-step">
+        <span class="chip violet">Evidence</span>
+        <strong>Observable proof</strong>
+        <p>Which log, status, artifact, or response proves success.</p>
+      </article>
+    </div>
+
+    <details>
+      <summary>Raw request/response or command output</summary>
+      <div class="details-body">
+        <pre><code>Keep long but safe raw evidence here.</code></pre>
+      </div>
+    </details>
+  </div>
+</section>
+```
+
+Pair the structure with compact CSS classes such as `.wire-visual`, `.wire-row`, `.http-card`, `.kv`, `.payload-box`, `.process-lane`, `.process-step`, and `.wire-arrow`. Keep the request and response cards visually close enough that junior readers can compare “what went in” and “what came back” without scrolling.
+
 ## Final Flow Summary Graphic
 
-Add a bottom-of-document graphic when the document describes a workflow, lifecycle, architecture path, or implementation sequence. Place it after the appendix or just before the footer so readers finish with a compact mental model.
+Add a bottom-of-document graphic when the document describes a workflow, lifecycle, architecture path, request/response path, deployment, QA run, or implementation sequence. Place it after the appendix or the actual processing flow section, just before the footer, so readers finish with a compact mental model.
 
 Use inline SVG or CSS/HTML blocks, not Mermaid runtime, so the document stays standalone. The graphic should show:
 
@@ -95,6 +178,7 @@ Use inline SVG or CSS/HTML blocks, not Mermaid runtime, so the document stays st
 - storage or no-storage policy
 - delivery or output
 - loss, retry, security, or rollback policy when those decisions matter
+- the final observable result or response when the source includes one
 
 ```html
 <section id="final-flow" class="section">
@@ -153,6 +237,7 @@ Prefer these reusable classes:
 - `.callout`, `.callout.warn`, `.callout.danger`
 - `.chips`, `.chip`, `.chip.good`, `.chip.warn`, `.chip.no`
 - `.flow`, `.flow-step`
+- `.wire-visual`, `.wire-row`, `.wire-arrow`, `.http-card`, `.kv`, `.payload-box`, `.process-lane`, `.process-step`
 - `.matrix`, `.module`
 - `.table-wrap`
 - `details`, `summary`, `.details-body`

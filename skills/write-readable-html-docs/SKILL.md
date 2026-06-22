@@ -1,6 +1,6 @@
 ---
 name: write-readable-html-docs
-description: Create or update standalone, review-friendly HTML versions of dense Markdown or text design documents. Use when Codex is asked to turn a design doc, architecture note, specification, QA report, implementation plan, or long Markdown file into a human-readable HTML document that actively uses HTML affordances such as navigation, summary panels, flow diagrams, comparison tables, callouts, collapsible details, timelines, and checklists instead of merely rendering the original Markdown.
+description: Create or update standalone, review-friendly HTML versions of dense Markdown or text design documents. Use when Codex is asked to turn a design doc, architecture note, specification, QA report, implementation plan, or long Markdown file into a human-readable HTML document that actively uses HTML affordances such as navigation, summary panels, request/processing-flow visualizations, final flow graphics, comparison tables, callouts, collapsible details, timelines, and checklists instead of merely rendering the original Markdown.
 ---
 
 # Write Readable HTML Docs
@@ -58,13 +58,15 @@ Use wording like:
    - Sticky/early navigation: short section labels.
    - Main sections: overview, flow, responsibility, contract/API, storage/config, implementation, validation, decisions.
    - Appendix: long mappings, schemas, raw examples, edge cases, detailed TODOs.
-   - Final flow summary: add a bottom-of-document graphic that lets readers understand the end-to-end processing flow at a glance.
+   - Actual processing flow: when the source describes an API, QA run, workflow, lifecycle, architecture path, deployment, or request/response behavior, add a bottom-of-document section that shows what actually happens from trigger/input to returned output. Include concrete method/path, payload shape, key headers, major internal modules, storage/external calls, and final response/result when the source provides them.
+   - Final flow summary: after the actual processing flow or appendix, add a final bottom-of-document graphic that lets readers understand the end-to-end processing flow at a glance.
 
 4. Write standalone HTML.
    - Embed CSS in the file unless the user asks for shared assets.
    - Use semantic elements: `header`, `nav`, `main`, `section`, `article`, `details`, `summary`, `table`.
    - Prefer CSS grids, flow cards, callouts, chips, timelines, and checklists over long paragraphs.
-   - Add the final flow summary near the bottom, before the footer or after the appendix. Use inline SVG or CSS/HTML blocks so it works without external runtimes.
+   - Add an actual processing flow near the bottom when applicable, before the final flow summary. Use a request/input card, process lane, response/output card, and collapsible raw details so junior readers can trace the concrete path without reading every log.
+   - Add the final flow summary near the bottom, before the footer or after the appendix/actual processing flow. Use inline SVG or CSS/HTML blocks so it works without external runtimes.
    - Keep colors restrained and not one-note. Use neutral base with a few semantic accents.
    - Preserve code blocks and exact identifiers with `code`/`pre`.
 
@@ -72,6 +74,7 @@ Use wording like:
    - Check internal anchor links and duplicate ids.
    - Check that the top maintenance comment and visible source-sync note exist when a source file exists.
    - Check that the document has enough structural affordances: sections, details, tables, callouts, or checklists.
+   - For documents with request/response, deployment, QA, or lifecycle content, check that the bottom area contains both an actual processing flow section and a final flow summary graphic. If one is not applicable, state why in the final response.
    - Run `scripts/validate_html_doc.py` when available.
 
 ## HTML Patterns
@@ -79,6 +82,7 @@ Use wording like:
 Read `references/html-patterns.md` when building or revising a document. It contains concise patterns for:
 
 - hero + metadata strip
+- actual request/processing flow
 - flow diagrams
 - final flow summary graphic
 - responsibility matrix
@@ -94,9 +98,10 @@ Read `references/html-patterns.md` when building or revising a document. It cont
 - Preserve the source language. For Korean docs, write Korean UI labels and notes.
 - Do not expose private secrets, full tokens, private keys, or sensitive raw payloads.
 - If the source has Mermaid, do not rely on Mermaid runtime unless the user wants external scripts. Recreate the meaning with HTML/CSS flow blocks.
-- When the source document exists and the final flow summary changes document content, update the source with an equivalent text, Mermaid, or diagram description.
+- When the source document exists and the actual processing flow or final flow summary changes document content, update the source with an equivalent text, Mermaid, or diagram description.
 - Avoid turning every original heading into a top-level HTML section. Reorganize by reader usefulness.
 - Put long raw mappings, SQL, OpenAPI snippets, and exhaustive tables behind `details` unless they are central to first-pass understanding.
+- Do not expose private secrets, full tokens, private keys, or sensitive raw payloads in request/processing visualizations; redact or summarize sensitive values while preserving the shape and meaning.
 - Mention in the final response where the file was created and what validation was run.
 
 ## Validation Command

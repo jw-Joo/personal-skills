@@ -11,6 +11,8 @@ Turn a completed kc-manual manual update report into a concise Japanese Markdown
 
 The output should match the compact prior-report style: title, menu sections, change headings, and short `旧:` / `新:` summaries.
 
+Language boundary: this skill's output summary is Japanese-only. This rule does not apply to the `manual_update_report` Markdown/HTML produced by `$kc-manual-release-update`; that review report follows the active user/repository response language while preserving source UI strings and raw snippets.
+
 ## Required Input
 
 Require one source report before writing the summary:

@@ -1,4 +1,4 @@
 interface:
   display_name: "Readable HTML Docs"
-  short_description: "Turn dense docs into review-friendly HTML"
-  default_prompt: "Use $write-readable-html-docs to turn this Markdown design document into a review-friendly standalone HTML file."
+  short_description: "Visualize dense docs as review HTML"
+  default_prompt: "Use $write-readable-html-docs to turn this Markdown document into a standalone review HTML file with summary panels, evidence sections, an actual processing flow, and a final flow graphic."

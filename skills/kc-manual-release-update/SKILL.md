@@ -50,6 +50,8 @@ If the user only summarizes changes or omits the release note, ask for the full 
    - Copy images into the existing `source/applet/images/...` area only when they improve the manual.
 8. Create the change report:
    - First create a Markdown source report, then use `$write-readable-html-docs` to create a standalone HTML report from that source.
+   - Language rule: write the human-facing review HTML in the active user/repository response language. Because the HTML is generated from a Markdown source report, keep that source report in the same language as the HTML unless the user explicitly requests otherwise. Preserve Japanese UI labels, release-item names, file names, code literals, and raw before/after snippets exactly when they are source evidence, but do not switch the review prose to Japanese just because the release note or manual source is Japanese.
+   - The compact `マニュアル変更箇所` summary is a separate `$kc-manual-change-summary` artifact and remains Japanese-only.
    - Put all report artifacts in the input release-note package, not in the `kc-manual` repository:
      - If the input is a directory, use `<release-note-directory>/manual_update_report/`.
      - If the input is a single file, use `<release-note-file-parent>/manual_update_report/`.

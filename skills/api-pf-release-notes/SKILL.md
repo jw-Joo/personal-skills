@@ -1,13 +1,13 @@
 ---
 name: api-pf-release-notes
-description: Generate API-PF release note packages from a user-provided directory or single release_input.md file. Use when Codex needs to create a new .scratch/RN input template with or without a user-provided name, process title, normal or merge commit hashes, validation or walidation notes, screenshots, inspect API-PF git history, and write the final package under release_note_output.
+description: Generate API-PF release note packages from a user-provided directory or single release_input.md file. Use when Codex needs to create a new .scratch/RN input template with or without a user-provided name, process title, normal or merge commit hashes, validation or walidation notes, screenshots, inspect API-PF git history, and write the final Japanese and Korean package under release_note_output.
 ---
 
 # API-PF Release Notes
 
 ## Overview
 
-Create one API-PF release note package from either a single `release_input.md` file or legacy loose input files. Inspect commit history directly with git, normalize validation content into plain bullet points, attach images, and write the final markdown output under `release_note_output/`.
+Create one API-PF release note package from either a single `release_input.md` file or legacy loose input files. Inspect commit history directly with git, normalize validation content into plain bullet points, attach images, and write both the final Japanese release note and a Korean review copy under `release_note_output/`.
 
 When the user asks for a new template, create a new fill-in template directory under `.scratch/RN/`, tell the user to fill `release_input.md`, and stop. If the user provides non-path text, use that text as the new template directory name after only filename-safety cleanup such as replacing path separators or control characters; preserve spaces, ticket numbers, bracketed labels, and Japanese text in the directory name. Also prefill `## Title` from the same text, but remove leading project-management prefixes that are not part of the user-facing feature title, such as a ticket number (`CC_NTTC-997`) and leading work-type labels (`【実装】`). If the user provides no text, use `TODO` as both the directory name and initial title. Do not draft a release note from an empty template.
 
@@ -59,8 +59,9 @@ Continue to support separate title, commit, validation, and image files. Use thi
 5. Resolve any blocking ambiguity one question at a time.
 6. Normalize commit hashes, expanding merge commits into merged-branch review targets and preserving each merge commit for final-result diff inspection.
 7. Inspect commit history from the API-PF repository with `git show --stat --summary <hash>` and, when needed, `git show <hash> -- <path>` or `git show --name-only <hash>`.
-8. Draft the release note with the structure from `assets/output_template.md`.
-9. Copy images into `<input-dir>/release_note_output/` and reference them with relative paths.
+8. Draft the Japanese release note with the structure from `assets/output_template.md`.
+9. Draft a Korean review copy with the same structure, image references, and facts.
+10. Copy images into `<input-dir>/release_note_output/` and reference them with relative paths.
 
 ## Template Creation
 
@@ -118,7 +119,7 @@ Apply these rules:
 - Use every discovered commit file unless the user says otherwise.
 - Use every discovered validation file unless the user says otherwise.
 - Use every discovered image unless the user says otherwise.
-- Ask before overwriting an existing `<input-dir>/release_note_output/release_note.md`.
+- Ask before overwriting an existing `<input-dir>/release_note_output/release_note.md` or `<input-dir>/release_note_output/release_note_ko.md`.
 
 Ask one question at a time. State the fact pattern first, then ask the smallest possible question.
 
@@ -194,11 +195,11 @@ Use these heuristics:
 
 If category confidence is low after reading the diff, ask the user instead of guessing.
 
-## Draft The Release Note
+## Draft The Release Notes
 
-Read `references/output-format.md` and use `assets/output_template.md` as the structural template.
+Read `references/output-format.md` and use `assets/output_template.md` as the Japanese structural template. Use `assets/output_template_ko.md` as the Korean review-copy structural template.
 
-Write the sections in this order:
+Write the Japanese `release_note.md` sections in this order:
 
 1. Title
 2. `### 経緯`
@@ -222,6 +223,15 @@ Follow these rules:
 - Keep the original item order, but rewrite every retained validation item as `- ...`.
 - Attach every image under the relevant `実装内容` category section.
 - Use Markdown level-4 headings for implementation category subsections, such as `#### フロントエンド`; do not use bold-only labels such as `**フロントエンド**`.
+
+Also write a Korean review copy as `release_note_ko.md`:
+
+- Use the same content, facts, order, images, and relative image references as the Japanese release note.
+- Translate the title and all narrative text into Korean for review purposes.
+- Use these Korean section headings: `### 배경`, `### 대응 방침`, `### 구현 내용`, `### 검증한 내용`.
+- Translate implementation category headings to Korean while preserving the same grouping. Use `#### 프론트엔드`, `#### 백엔드`, `#### 인프라`, and `#### 기타(API-PF 자체는 아님)` as the Korean equivalents.
+- Keep product names, component names, ticket numbers, and quoted UI labels recognizable. Translate UI labels only when the Korean text remains clearly tied to the original Japanese label.
+- Keep the Korean copy concise and faithful; do not add new claims that are absent from the Japanese release note or git history.
 
 ## Ask Questions Only When Necessary
 
@@ -252,10 +262,11 @@ Create `<input-dir>/release_note_output/`.
 Write:
 
 - `<input-dir>/release_note_output/release_note.md`
+- `<input-dir>/release_note_output/release_note_ko.md`
 
 Copy every selected image into the same directory and reference it with a relative path such as `![image.png](./image.png)`.
 
-Keep the final document in Japanese to match the bundled template and existing release-note examples.
+Keep `release_note.md` in Japanese to match the bundled template and existing release-note examples. Keep `release_note_ko.md` as a Korean review copy with the same Markdown structure and image references.
 
 ## Resources
 
@@ -265,4 +276,5 @@ Keep the final document in Japanese to match the bundled template and existing r
 - Use `scripts/extract_commit_hashes.py` for legacy commit files.
 - Use `references/implementation-categories.md` for the allowed category names and path heuristics.
 - Use `references/output-format.md` for section-by-section output rules.
-- Use `assets/output_template.md` as the output shape to mirror.
+- Use `assets/output_template.md` as the Japanese output shape to mirror.
+- Use `assets/output_template_ko.md` as the Korean review-copy output shape to mirror.

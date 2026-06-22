@@ -30,7 +30,7 @@ Follow this section order:
 
 ### 実装内容
 
-- Group details by implementation category.
+- Group details by implementation category using Markdown level-4 headings such as `#### フロントエンド`. Do not use bold-only category labels such as `**フロントエンド**`.
 - Attach images under the relevant category subsection.
 - Preserve the input image order when multiple images are present.
 - Write for readers who may include PM, QA, support, and engineers.

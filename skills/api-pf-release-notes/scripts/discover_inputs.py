@@ -10,6 +10,12 @@ from pathlib import Path
 
 TEXT_EXTENSIONS = {".md", ".markdown", ".txt"}
 IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif", ".webp"}
+SINGLE_INPUT_NAMES = {
+    "release_input",
+    "release-input",
+    "rn_input",
+    "rn-input",
+}
 SKIP_DIR_NAMES = {
     ".git",
     ".next",
@@ -70,6 +76,7 @@ def build_candidate(path: Path, root: Path, score: int, matched_terms: list[str]
 
 def discover(root: Path) -> dict[str, object]:
     categories = {
+        "single_input_candidates": [],
         "title_candidates": [],
         "commit_candidates": [],
         "validation_candidates": [],
@@ -91,6 +98,14 @@ def discover(root: Path) -> dict[str, object]:
             continue
 
         normalized = normalize_name(path)
+        if path.stem.lower() in SINGLE_INPUT_NAMES or normalized in {
+            "release input",
+            "rn input",
+        }:
+            categories["single_input_candidates"].append(
+                build_candidate(path, root, 100, ["single-input"])
+            )
+
         for kind, patterns in TYPE_PATTERNS.items():
             score, matched_terms = compute_score(normalized, patterns)
             if score <= 0:
@@ -104,11 +119,13 @@ def discover(root: Path) -> dict[str, object]:
 
     return {
         "target_directory": str(root.resolve()),
+        "single_input_candidates": categories["single_input_candidates"],
         "title_candidates": categories["title_candidates"],
         "commit_candidates": categories["commit_candidates"],
         "validation_candidates": categories["validation_candidates"],
         "image_candidates": categories["image_candidates"],
         "counts": {
+            "single_input": len(categories["single_input_candidates"]),
             "title": len(categories["title_candidates"]),
             "commit": len(categories["commit_candidates"]),
             "validation": len(categories["validation_candidates"]),

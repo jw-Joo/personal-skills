@@ -1,45 +1,120 @@
 ---
 name: api-pf-release-notes
-description: Generate API-PF release note packages from a user-provided input directory. Use when Codex needs to create or update an API-PF release note from title files, commit-hash files including normal or merge commits, validation or walidation files, and screenshot images, then inspect API-PF git history directly and write the final package into the input directory's release_note_output folder.
+description: Generate API-PF release note packages from a user-provided directory or single release_input.md file. Use when Codex needs to create a new .scratch/RN input template with or without a user-provided name, process title, normal or merge commit hashes, validation or walidation notes, screenshots, inspect API-PF git history, and write the final package under release_note_output.
 ---
 
 # API-PF Release Notes
 
 ## Overview
 
-Create one API-PF release note package from one user-provided input directory. Discover loose input files flexibly, inspect commit history directly with git, normalize validation content into plain bullet points, attach images, and write the final markdown output under `release_note_output/`.
+Create one API-PF release note package from either a single `release_input.md` file or legacy loose input files. Inspect commit history directly with git, normalize validation content into plain bullet points, attach images, and write the final markdown output under `release_note_output/`.
+
+When the user asks for a new template, create a new fill-in template directory under `.scratch/RN/`, tell the user to fill `release_input.md`, and stop. If the user provides non-path text, use that text as the new template directory name after only filename-safety cleanup such as replacing path separators or control characters; preserve spaces, ticket numbers, bracketed labels, and Japanese text in the directory name. Also prefill `## Title` from the same text, but remove leading project-management prefixes that are not part of the user-facing feature title, such as a ticket number (`CC_NTTC-997`) and leading work-type labels (`【実装】`). If the user provides no text, use `TODO` as both the directory name and initial title. Do not draft a release note from an empty template.
+
+## Input Modes
+
+Prefer the single-file mode for new work.
+
+### Single-file mode
+
+Use `release_input.md` with these sections:
+
+```markdown
+## Title
+Japanese release note title
+
+## Commits
+normal-or-merge-commit-hash
+
+## Validation
+- verification item
+
+## Images
+image.png
+```
+
+Parse it with `scripts/parse_release_input.py`. Use the parsed `title`, `commit_hashes`, `validation_items`, and `image_paths`. If the image section is empty, still use discovered image files from the same input directory unless the user says otherwise.
+
+### Legacy loose-file mode
+
+Continue to support separate title, commit, validation, and image files. Use this mode when no single input file exists.
 
 ## Quick Start
 
-1. Ask for the target input directory path when the user has not already provided it.
-2. Run `python3 scripts/discover_inputs.py "<input-dir>"` to find title, commit, validation, and image candidates.
-3. Resolve any blocking ambiguity one question at a time.
-4. Run `python3 scripts/extract_commit_hashes.py <commit-file>...` for every selected commit file.
-5. Normalize extracted hashes, expanding merge commits into merged-branch review targets and preserving each merge commit for final-result diff inspection.
-6. Inspect commit history from the API-PF repository with `git show --stat --summary <hash>` and, when needed, `git show <hash> -- <path>` or `git show --name-only <hash>`.
-7. Draft the release note with the structure from `assets/output_template.md`.
-8. Copy images into `<input-dir>/release_note_output/` and reference them with relative paths.
+1. Resolve the user argument.
+   - If the user provides an existing file, use it as `release_input.md`.
+   - If the user provides an existing directory, scan that directory.
+   - If the user asks for a new template and provides non-path text, create a new template directory under `.scratch/RN/<text>`.
+   - For non-path text, keep the directory name as close to the user input as the filesystem allows, and prefill `## Title` with a cleaned title that removes leading ticket IDs and work labels such as `【実装】`.
+   - If the user asks for a new template without a name, create a new template directory under `.scratch/RN/TODO`.
+   - If no argument is available for a release-note generation request, create a `.scratch/RN/TODO` template instead of asking the user to create files manually.
+2. If the target directory or input file does not exist, or if the request is specifically for a new template, create a template:
+   - Run `python3 scripts/create_release_input_template.py "<name-or-path>"` when a name or path is available.
+   - Run `python3 scripts/create_release_input_template.py` when no name or path is available.
+   - Tell the user the created `release_input.md` path.
+   - Ask the user to fill the template and rerun the skill.
+   - Stop without writing `release_note_output/`.
+3. Run `python3 scripts/discover_inputs.py "<input-dir>"`.
+4. If one single input candidate exists, run `python3 scripts/parse_release_input.py <release_input.md>`.
+5. Resolve any blocking ambiguity one question at a time.
+6. Normalize commit hashes, expanding merge commits into merged-branch review targets and preserving each merge commit for final-result diff inspection.
+7. Inspect commit history from the API-PF repository with `git show --stat --summary <hash>` and, when needed, `git show <hash> -- <path>` or `git show --name-only <hash>`.
+8. Draft the release note with the structure from `assets/output_template.md`.
+9. Copy images into `<input-dir>/release_note_output/` and reference them with relative paths.
 
-## Run The Workflow
+## Template Creation
 
-### 1. Discover Inputs
+Use `scripts/create_release_input_template.py` before asking the user to manually create files.
 
-Use `scripts/discover_inputs.py` first. It searches the provided directory recursively, skips generated output directories, and classifies candidates into:
+Examples:
 
+```bash
+python3 scripts/create_release_input_template.py
+python3 scripts/create_release_input_template.py 3977813
+python3 scripts/create_release_input_template.py "CC_NTTC-997 【実装】「識別情報テンプレート」と「証明書ポリシー」を1画面にまとめる"
+python3 scripts/create_release_input_template.py .scratch/RN/3977813
+python3 scripts/create_release_input_template.py .scratch/RN/3977813/release_input.md
+```
+
+For no name, the script writes a new directory such as:
+
+```text
+.scratch/RN/TODO/release_input.md
+```
+
+For non-path text such as `3977813`, the script writes a new directory such as:
+
+```text
+.scratch/RN/3977813/release_input.md
+```
+
+For non-path text such as `CC_NTTC-997 【実装】「識別情報テンプレート」と「証明書ポリシー」を1画面にまとめる`, the script writes a new directory using that full text and prefills the title as `「識別情報テンプレート」と「証明書ポリシー」を1画面にまとめる`.
+
+If that directory already exists, the script creates a sibling such as `.scratch/RN/3977813-2/release_input.md` or `.scratch/RN/TODO-2/release_input.md`. Do not overwrite an existing `release_input.md` unless the user explicitly asks with force-like intent. If the user is trying to generate a release note from an existing template but required fields are still missing, tell the user which fields are missing and ask them to fill the same file.
+
+## Discover Inputs
+
+Use `scripts/discover_inputs.py` after the target exists. It searches recursively, skips generated output directories, and classifies candidates into:
+
+- `single_input_candidates`
 - `title_candidates`
 - `commit_candidates`
 - `validation_candidates`
 - `image_candidates`
 
-Treat the discovery output as an aid, not as the final answer. Read the candidate files before using them.
+Treat the discovery output as an aid, not as the final answer. Read or parse the candidate files before using them.
 
-### 2. Resolve File Selection
+## Resolve File Selection
 
 Apply these rules:
 
-- Auto-select a title file when there is exactly one title candidate.
-- Ask the user to choose when there are multiple title candidates.
-- Ask the user for a title when no title file exists.
+- Prefer single-file mode when exactly one `single_input_candidate` exists.
+- Ask the user to choose when multiple single input candidates compete.
+- In single-file mode, use parsed title, commits, validation items, and listed image paths.
+- In single-file mode, also use discovered images from the same directory when the image section is empty.
+- In legacy mode, auto-select a title file when there is exactly one title candidate.
+- In legacy mode, ask the user to choose when there are multiple title candidates.
+- In legacy mode, ask the user for a title when no title file exists.
 - Use every discovered commit file unless the user says otherwise.
 - Use every discovered validation file unless the user says otherwise.
 - Use every discovered image unless the user says otherwise.
@@ -47,16 +122,18 @@ Apply these rules:
 
 Ask one question at a time. State the fact pattern first, then ask the smallest possible question.
 
-### 3. Extract Commit Hashes
+## Extract Commit Hashes
 
-Run `scripts/extract_commit_hashes.py` on all selected commit files. The script returns ordered, deduplicated hashes and reports non-hash lines for debugging.
+For single-file mode, use the `commit_hashes` returned by `scripts/parse_release_input.py`.
 
-If the script returns zero hashes:
+For legacy loose-file mode, run `scripts/extract_commit_hashes.py` on all selected commit files. The script returns ordered, deduplicated hashes and reports non-hash lines for debugging.
 
-1. Re-open the commit files and verify whether they contain short or full hashes.
-2. Ask the user for corrected commit input if the files truly do not contain usable hashes.
+If zero hashes are found:
 
-### 4. Normalize Commit Inputs
+1. Re-open the input and verify whether it contains short or full hashes.
+2. Ask the user for corrected commit input if the input truly does not contain usable hashes.
+
+## Normalize Commit Inputs
 
 Normalize extracted commit hashes before drafting. Treat normal commits and merge commits differently so the release note reflects both the feature-side work and the final result that landed on the target branch.
 
@@ -83,9 +160,9 @@ Use this final diff as the source of truth for what actually landed on the targe
 
 If the input hash is a squash merge commit or a fast-forward result without a merge commit, Git history may not preserve the original feature commit range. In that case, inspect the provided commit directly and ask for PR metadata, original branch history, or corrected commit input only when the commit itself does not explain the release-note content.
 
-### 5. Inspect Git History
+## Inspect Git History
 
-Use git history directly from the API-PF repository. Do not rely on commit filenames or validation text alone.
+Use git history directly from the API-PF repository. Do not rely on commit filenames, template text, or validation text alone.
 
 For each normalized inspection target:
 
@@ -131,7 +208,7 @@ Write the sections in this order:
 
 Follow these rules:
 
-- Read the title from the selected title file.
+- Read the title from parsed single input or the selected title file.
 - Draft `経緯` from the product problem the commits are solving.
 - Draft `対応方針` from the implementation strategy, not from low-level code details.
 - Group `実装内容` bullets by implementation category, not by commit hash.
@@ -150,15 +227,17 @@ Follow these rules:
 
 Ask the user when one of these conditions blocks reliable output:
 
-1. No input directory path is available
-2. No title file exists
-3. Multiple title files compete
-4. No valid commit hashes can be extracted
-5. Git history does not explain the intent well enough to draft `経緯`
-6. Implementation category remains unclear
-7. Frontend changes are detected but no image is available
-8. An existing output file would be overwritten
-9. A merge commit has more than two parents and the feature-side parent cannot be inferred safely
+1. No target name, input file, or input directory is available
+2. The target does not exist and template creation fails
+3. A required single-file field is missing after the user has filled the template
+4. No title exists
+5. Multiple title files compete in legacy mode
+6. No valid commit hashes can be extracted
+7. Git history does not explain the intent well enough to draft `経緯`
+8. Implementation category remains unclear
+9. Frontend changes are detected but no image is available
+10. An existing output file would be overwritten
+11. A merge commit has more than two parents and the feature-side parent cannot be inferred safely
 
 For frontend changes without images:
 
@@ -180,8 +259,10 @@ Keep the final document in Japanese to match the bundled template and existing r
 
 ## Resources
 
+- Use `scripts/create_release_input_template.py` to create `.scratch/RN` templates.
+- Use `scripts/parse_release_input.py` for single-file mode.
+- Use `scripts/discover_inputs.py` before asking file-selection questions.
+- Use `scripts/extract_commit_hashes.py` for legacy commit files.
 - Use `references/implementation-categories.md` for the allowed category names and path heuristics.
 - Use `references/output-format.md` for section-by-section output rules.
 - Use `assets/output_template.md` as the output shape to mirror.
-- Use `scripts/discover_inputs.py` before asking file-selection questions.
-- Use `scripts/extract_commit_hashes.py` before inspecting git history.

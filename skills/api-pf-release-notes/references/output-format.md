@@ -14,8 +14,9 @@ Follow this section order:
 
 ### Title
 
-- Read from the selected title file.
-- Ask the user when no title file exists or when multiple title files compete.
+- Read from parsed `release_input.md` in single-file mode.
+- In legacy mode, read from the selected title file.
+- Ask the user when no title exists or when multiple legacy title files compete.
 
 ### 経緯
 
@@ -40,7 +41,7 @@ Follow this section order:
 
 ### 検証済みの内容
 
-- Normalize validation input into plain Markdown bullet points only.
+- Normalize validation input from parsed `release_input.md` or selected validation files into plain Markdown bullet points only.
 - Remove blockquote markers, checklist headers, and similar wrapper formatting.
 - Convert every retained validation item into `- ...` while preserving the original item order.
 - Concatenate multiple validation files in discovery order.

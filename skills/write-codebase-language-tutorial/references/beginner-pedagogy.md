@@ -56,6 +56,13 @@ Expose framework “magic” by finding its binding mechanism. Examples:
 - Rust traits: concrete implementation selected at the call site or bound.
 - Go interfaces: concrete value assigned and method invoked through the interface.
 
+When describing lookup as “nearest,” “matching,” or “resolved,” always name what must
+match. For React, say “the nearest ancestor Provider using the exact same Context
+object,” not merely “the nearest Provider.” Different Context providers do not compete.
+For key- or type-based injection, state the exact key or type with the same precision.
+Check whether the repository actually has repeated matching providers; if it does not,
+label nesting examples as hypothetical and say the rule is not currently exercised.
+
 ## Learning boundaries
 
 Classify each detail:
@@ -84,6 +91,20 @@ Map roles, not syntax:
 
 - “React Context object is like a Vue injection key” is useful.
 - “React Provider is the same as a Vue component” is too broad.
+
+Knowing a language or framework does not imply knowing every feature in its ecosystem.
+Do not use `provide/inject`, Pinia, Redux, dependency injection, or another specialized
+mechanism as the main explanation unless the user has shown familiarity with that
+specific mechanism. If familiarity is unknown:
+
+1. teach the target concept in plain language first;
+2. keep the analogy optional or collapsed;
+3. explain the comparison concept from zero before mapping it;
+4. distinguish an exact counterpart from a tool that merely solves a similar problem.
+
+For example, Vue `provide/inject` is the closest built-in counterpart to React Context,
+while Pinia shares the goal of distant access to shared state but is a fuller state store.
+Do not group both under one “same as Context” label.
 
 For each analogy, state:
 

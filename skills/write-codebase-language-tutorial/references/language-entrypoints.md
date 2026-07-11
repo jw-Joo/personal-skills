@@ -128,6 +128,46 @@ Inspect:
 - API client and one actual screen-to-server flow;
 - `node_modules`, generated files, and build output before treating code as authored logic.
 
+### Minimum JSX prerequisites
+
+Before teaching providers, contexts, routing, hooks, or application state, verify that the
+reader can distinguish:
+
+1. a component definition such as `function Header() { ... }` from its JSX use
+   such as `<Header />`;
+2. capitalized component tags from lowercase browser element tags;
+3. a self-closing use from an opening/closing pair whose inner content becomes
+   `children`;
+4. `<>...</>` as a Fragment that groups JSX without adding a DOM wrapper;
+5. a component function, the React element description it returns, and the browser DOM
+   produced after React finishes expanding the component tree.
+
+Show one complete definition-to-use-to-DOM example before presenting a tree made only of
+component names. Never introduce `Header`, `Modal`, `Profile`, or another invented
+component only as an unexplained tag. Define it in the same example or label it explicitly
+as a placeholder and move the example after the prerequisite.
+
+### State management and ecosystem boundaries
+
+When the reader asks for a Vuex, Pinia, Redux, or “global store” counterpart:
+
+1. inspect the project's manifest and imports before naming the approach it uses;
+2. distinguish React core primitives (`useState`, `useReducer`, Context) from external
+   store libraries;
+3. explain that Context transports a value through a component-tree scope, while the
+   state still lives in a component, reducer, or external store;
+4. treat a Provider + state/reducer + consumer Hook bundle as store-like behavior, not
+   raw Context as a store;
+5. distinguish an app-wide external store from a root-level Context that merely feels
+   global because its Provider wraps most of the app;
+6. state clearly when no external global-store dependency exists in the inspected
+   project.
+
+Do not imply that React ships one prescribed Vuex-like store. If mentioning Redux for a
+current project, distinguish the Redux library, React bindings, and the currently
+recommended Redux Toolkit authoring approach using primary documentation. Do not turn a
+repository-reading tutorial into a library-selection guide unless the user asks for one.
+
 ### Keep layers separate
 
 - JavaScript syntax and runtime behavior

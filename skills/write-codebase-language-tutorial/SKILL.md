@@ -103,6 +103,11 @@ Treat every “I do not understand” question as tutorial evaluation data.
 
 If the question reveals a factual error, correct the tutorial and explicitly identify the correction.
 
+When the current session is also evaluating or developing this skill, promote reusable
+feedback into the appropriate bundled reference, validator, or template. Updating only
+the current `.scratch` tutorial is not sufficient. Synchronize the installed skill copy,
+validate it, and report the global skill path separately from the tutorial artifact path.
+
 ### 8. Validate
 
 Run:

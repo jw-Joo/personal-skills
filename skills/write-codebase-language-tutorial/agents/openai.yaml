@@ -1,0 +1,4 @@
+interface:
+  display_name: "Codebase Language Tutorial"
+  short_description: "실제 서비스 코드로 언어를 처음부터 배우는 튜토리얼"
+  default_prompt: "Use $write-codebase-language-tutorial to inspect this service and write a zero-assumption language tutorial grounded in its actual code."

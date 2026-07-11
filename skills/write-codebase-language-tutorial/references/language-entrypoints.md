@@ -168,6 +168,74 @@ current project, distinguish the Redux library, React bindings, and the currentl
 recommended Redux Toolkit authoring approach using primary documentation. Do not turn a
 repository-reading tutorial into a library-selection guide unless the user asks for one.
 
+### Effect prerequisites and lifecycle timing
+
+Define an Effect before the first visible `useEffect` example. Do not use “effect,”
+“mount,” “dependency,” “cleanup,” or “side effect” as unexplained shorthand.
+
+Teach these roles separately:
+
+- render: calculate JSX from the current props and state;
+- event handler: run because the user or another explicit event triggered it;
+- Effect: after React commits a render, synchronize with an external system such as an
+  API/SDK session, timer, browser event subscription, storage, or non-React widget.
+
+For the first actual Effect, decode:
+
+1. the callback being passed to `useEffect` rather than invoked at registration time;
+2. the exact external operation performed when React later runs the callback;
+3. every dependency in the array and when a changed reference/value would cause another
+   setup run;
+4. any returned cleanup function and what it reverses;
+5. which setter schedules the next render and what the next render observes.
+
+Show the sequence `initial render → commit → Effect → external result → setter →
+re-render`. Do not say an Effect initializes a component if the component already rendered
+with initial state first. When the code uses Strict Mode, defer its extra development-only
+setup/cleanup check to an optional note so it does not obscure the primary flow.
+
+### Provider value provenance and render timing
+
+When a Provider passes an object such as `value={{...}}` or `value={value}`, do not imply
+that the object literal initializes every field. Trace each public field back to one of:
+
+- state initialized by `useState` or `useReducer`;
+- a value derived during the current render;
+- a function defined in the component or imported from elsewhere;
+- a prop, context value, constant, or external result.
+
+For a reader who knows Vuex or Pinia, map the assembled Provider value by role:
+
+- state-backed fields ↔ store state;
+- render-derived fields ↔ getters or computed values;
+- function references ↔ actions;
+- the complete `value` object ↔ the store-like public surface exposed to consumers.
+
+State the analogy boundary immediately: the `value` object is not itself the state store.
+Hooks or a reducer retain the state, the object assembles the current public surface, and
+`<SomeContext.Provider value={value}>` publishes that surface to matching descendants.
+Answer explicitly that supplying the Provider's `value` prop is why this public object is
+assembled when that is what the source shows.
+
+Separate these events explicitly:
+
+```text
+component first render
+→ state initializers provide first values
+→ functions are defined and the public value object is assembled
+→ Provider supplies that render's value
+→ effects or user events call external systems
+→ setters update state
+→ React re-renders and assembles a new public value
+```
+
+Show the exact initializer and at least one actual update site. Explain that a `useState`
+initial argument supplies only the first render's state, while a setter schedules later
+state and a re-render. Distinguish defining or passing a function reference from invoking
+it: an object field such as `signIn` does not execute the function because there is no
+call expression such as `signIn(...)`. Defer the function's internal SDK or network logic
+until the reader needs that branch.
+
 ### Keep layers separate
 
 - JavaScript syntax and runtime behavior
